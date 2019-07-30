@@ -276,10 +276,7 @@ describe('compile-sass', function () {
         .then(function (context) {
           return expect(app, 'to yield exchange', {
             request: {
-              url: '/import-main/main.scss',
-              headers: {
-                'If-None-Match': context.res.get('etag')
-              }
+              url: '/import-main/main.scss'
             },
             response: 200
           });
@@ -297,7 +294,7 @@ describe('compile-sass', function () {
           request: 'GET /import-main-atomic/main.scss',
           response: 200
         })
-        .then(wait(300)) // File watcher delay
+        .then(wait(500)) // File watcher delay
         .then(function (context) {
           return expect.promise(function (resolve, reject) {
             fs.copySync(root + '/import-main-atomic/main.scss', root + '/import-main-atomic/main.scss.tmp');
@@ -306,14 +303,11 @@ describe('compile-sass', function () {
             resolve(context);
           });
         })
-        .then(wait(300)) // File watch trigger delay
+        .then(wait(500)) // File watch trigger delay
         .then(function (context) {
           return expect(app, 'to yield exchange', {
             request: {
               url: '/import-main-atomic/main.scss',
-              headers: {
-                'If-None-Match': context.res.get('etag')
-              }
             },
             response: 200
           });
@@ -378,9 +372,6 @@ describe('compile-sass', function () {
           return expect(app, 'to yield exchange', {
             request: {
               url: '/import-import-atomic/main.scss',
-              headers: {
-                'If-None-Match': context.res.get('etag')
-              }
             },
             response: 200
           });
